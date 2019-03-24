@@ -1,6 +1,7 @@
 (ns io.jackhay.gpdistribute.impl.config)
 
 ;default configuration options
+;-----------------------------
 
 ;if this is true, eval workers will
 ;request the remainder of the population
@@ -10,6 +11,16 @@
 
 ;show distribute specific log messages
 (def VERBOSE true)
+;status task uses a thread to log information
+;given a certain delay
+(def STATUS-TASK false)
+(def STATUS-DELAY 600) ;seconds
+
+;async channel buffer size (for holding queued individuals)
+;note: clojush agents block on evaluation so a
+; worker *shouldn't* have this many individuals waiting for
+; eval at any given time
+(def BUFFER-SIZE 100)
 
 ;hostnames (i.e. docker service names)
 ;clojush hostname (for returning individuals)

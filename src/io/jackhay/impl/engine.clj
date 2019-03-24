@@ -8,6 +8,8 @@
 (defrecord DistConfiguration
   ;see io.jackhay.gpdistribute.impl.config for a detailed desc. of options
   [stateful? verbose?
+   status-task? status-task-delay
+   buffer-size
    engine-hostname
    eval-hostname
    indiv-ingress-p
@@ -22,6 +24,9 @@
     (DistConfiguration.
       config/STATEFUL
       config/VERBOSE
+      config/STATUS-TASK
+      config/STATUS-DELAY
+      config/BUFFER-SIZE
       config/ENGINE-HOSTNAME
       config/EVAL-HOSTNAME
       config/INDIV-INGRESS-P
