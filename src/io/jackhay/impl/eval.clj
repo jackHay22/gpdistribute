@@ -105,13 +105,15 @@
             indiv (:indiv indiv-packet)
             current-cycle (:cycle indiv-packet)]
           ;validate individual before starting simulation
+
+          ;TODO: use req-p
           (if (valid-indiv? indiv)
           ;check if current cycle has changed
             (do
               (if (not (= current-cycle @CURRENT-CYCLE))
                  (do
                    (if verbose?
-                     (log/write-info "Detected new cycle, clearing opponent pool"))
+                     (log/write-info "Detected new cycle, clearing population pool"))
                    (reset! POPULATION-POOL (list))
                    (reset! INDIV-COUNT 0)
                    (reset! CURRENT-CYCLE current-cycle)))
@@ -119,8 +121,9 @@
               (swap! INDIV-COUNT inc)
               ;if node hasn't requested opponents for this cycle,
               ; request from engine host (block)
-              (if (empty? @POPULATION-POOL)
-                (request-opponent-pool!
+              (if (and (empty? @POPULATION-POOL)
+                       (:req-pop? indiv-packet))
+                (request-population-pool!
                   engine-hostname pop-req-p))
 
               (if verbose?
