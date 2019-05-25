@@ -106,7 +106,6 @@
             current-cycle (:cycle indiv-packet)]
           ;validate individual before starting simulation
 
-          ;TODO: use req-p
           (if (valid-indiv? indiv)
           ;check if current cycle has changed
             (do
@@ -131,9 +130,11 @@
                                       (:uuid indiv) " against " (count @POPULATION-POOL)
                                       " opponents")))
               (async/>! out-channel
-                ;create return map
-                ;TODO: using eval function (and potentially rest of pop)
-                ))
+                ;return evaluated individual
+                (if (:req-pop? indiv-packet)
+                    ;send rest of population to eval function
+                    (eval-fn indiv @POPULATION-POOL)
+                    (eval-fn indiv))))
              (if verbose?
                (log/write-error (str "Received invalid individual: " indiv)))))
       (catch Exception e
